@@ -11,5 +11,5 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class CategorySearchDto implements Serializable {
 
-    private Long categoryId;
+    private Long parentId;
 }

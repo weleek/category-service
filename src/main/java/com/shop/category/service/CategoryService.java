@@ -1,6 +1,5 @@
 package com.shop.category.service;
 
-import com.shop.category.dto.CategoryResponseDto;
 import com.shop.category.dto.CategorySaveDto;
 import com.shop.category.dto.CategorySearchDto;
 import com.shop.category.dto.CategoryUpdateDto;
@@ -26,12 +25,15 @@ public class CategoryService {
                 .orElseThrow(() -> new RuntimeException("데이터가 존재하지 않습니다."));
     }
 
-//    public List<CategoryResponseDto> getCategorys(CategorySearchDto dto) {
-//        return categoryQueryRepository.findBySearchDto(dto);
-//    }
-
     public List<Category> getCategorys(CategorySearchDto dto) {
         return categoryQueryRepository.findBySearchDto(dto);
+    }
+
+    private void print(List<Category> children) {
+        for (Category child: children) {
+            System.out.println("inner name:" + child.getName());
+            print(child.getChildren());
+        }
     }
 
     @Transactional

@@ -3,7 +3,9 @@ package com.shop.category.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -19,5 +21,5 @@ public class CategoryUpdateDto {
     @NotEmpty
     private String name;
 
-    private Set<CategoryUpdateDto> children = new HashSet<>();
+    private List<CategoryUpdateDto> children = new ArrayList<>();
 }
