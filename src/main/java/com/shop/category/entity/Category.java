@@ -2,6 +2,7 @@ package com.shop.category.entity;
 
 import com.shop.category.dto.CategorySaveDto;
 import com.shop.category.dto.CategoryUpdateDto;
+import com.shop.common.converter.BooleanToYNConverter;
 import com.shop.common.model.BaseEntity;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -34,19 +35,19 @@ public class Category extends BaseEntity {
     @Length(min = 2, max = 20)
     private String name;
 
-    @Column(nullable = false)
-    @ColumnDefault("1")
+    @Column(columnDefinition = "varchar(1) not null default 'N'", nullable = false)
     @Comment("카테고리 삭제 여부")
+    @Convert(converter = BooleanToYNConverter.class)
     private Boolean isDelete;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade =CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_id", referencedColumnName = "category_id")
     @ToString.Exclude
     private Category parent;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "parent")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "parent")
     @ToString.Exclude
-    private Set<Category> children = new HashSet<>();
+    private List<Category> children = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
@@ -62,13 +63,13 @@ public class Category extends BaseEntity {
     }
 
     @Builder
-    public Category(Long id, String name, Set<Category> children) {
+    public Category(Long id, String name, List<Category> children) {
         this.id = id;
         this.name = name;
         this.isDelete = false;
 
         if (children == null) {
-            this.children = new HashSet<>();
+            this.children = new ArrayList<>();
         }
         else {
             this.children = children;
@@ -90,7 +91,7 @@ public class Category extends BaseEntity {
         this.children.add(children);
     }
 
-    private void setChildren(Set<CategorySaveDto> childrenDto) {
+    private void setChildren(List<CategorySaveDto> childrenDto) {
         for (CategorySaveDto childDto: childrenDto) {
             Category category = Category.builder()
                     .name(childDto.getName())
@@ -104,7 +105,7 @@ public class Category extends BaseEntity {
         }
     }
 
-    private void updateChindren(Set<CategoryUpdateDto> childrenDto) {
+    private void updateChindren(List<CategoryUpdateDto> childrenDto) {
         for (Category child: this.getChildren()) {
             for (CategoryUpdateDto childDto: childrenDto) {
                 if (child.getId().equals(childDto.getId())) {
