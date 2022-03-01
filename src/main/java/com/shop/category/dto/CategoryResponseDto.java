@@ -24,6 +24,10 @@ public class CategoryResponseDto {
 
     private List<CategoryResponseDto> children;
 
+    public CategoryResponseDto(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
     private void addChild(CategoryResponseDto categoryResponseDto) {
         if (children == null) {
             children = new ArrayList<>();

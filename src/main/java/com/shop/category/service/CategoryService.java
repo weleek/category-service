@@ -6,6 +6,7 @@ import com.shop.category.dto.CategoryUpdateDto;
 import com.shop.category.entity.Category;
 import com.shop.category.repository.CategoryQueryRepository;
 import com.shop.category.repository.CategoryRepository;
+import com.shop.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class CategoryService {
 
     private Category getCategory(Long categoryId) {
         return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("데이터가 존재하지 않습니다."));
+                .orElseThrow(DataNotFoundException::new);
     }
 
     public List<Category> getCategories(CategorySearchDto dto) {

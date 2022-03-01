@@ -129,7 +129,7 @@ public class Category extends BaseEntity {
 
     public void delete() {
         if (isDelete) {
-            throw new IllegalStateException(id + "는 이미 삭제된 카테고리 입니다.");
+            throw new IllegalStateException();
         }
         this.isDelete = true;
 

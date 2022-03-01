@@ -3,10 +3,9 @@ package com.shop.category.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -15,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class CategoryUpdateDto {
 
-    @NotEmpty
+    @NotNull
     private Long id;
 
     @NotEmpty
