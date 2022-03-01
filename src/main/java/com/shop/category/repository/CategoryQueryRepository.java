@@ -29,6 +29,7 @@ public class CategoryQueryRepository {
     }
 
     private BooleanExpression eqParentId(Long parentId) {
-        return parentId != null ? QCategory.category.parent.id.eq(parentId) : null;
+        return parentId != null
+                ? QCategory.category.parent.id.eq(parentId) : QCategory.category.parent.id.isNull();
     }
 }
