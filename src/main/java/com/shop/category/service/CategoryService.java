@@ -25,15 +25,8 @@ public class CategoryService {
                 .orElseThrow(() -> new RuntimeException("데이터가 존재하지 않습니다."));
     }
 
-    public List<Category> getCategorys(CategorySearchDto dto) {
+    public List<Category> getCategories(CategorySearchDto dto) {
         return categoryQueryRepository.findBySearchDto(dto);
-    }
-
-    private void print(List<Category> children) {
-        for (Category child: children) {
-            System.out.println("inner name:" + child.getName());
-            print(child.getChildren());
-        }
     }
 
     @Transactional

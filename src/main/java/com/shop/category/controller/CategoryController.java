@@ -1,4 +1,4 @@
-package com.shop.category;
+package com.shop.category.controller;
 
 import com.shop.category.dto.*;
 import com.shop.category.entity.Category;
@@ -18,7 +18,7 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<?> getCategorys(CategorySearchDto dto) {
-        List<Category> categories = categoryService.getCategorys(dto);
+        List<Category> categories = categoryService.getCategories(dto);
         return ResponseEntity.ok(CategoriesResponseDto.from(categories));
     }
 

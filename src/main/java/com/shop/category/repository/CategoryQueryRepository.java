@@ -1,5 +1,6 @@
 package com.shop.category.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop.category.dto.CategorySearchDto;
@@ -28,9 +29,6 @@ public class CategoryQueryRepository {
     }
 
     private BooleanExpression eqParentId(Long parentId) {
-        if (parentId == null) {
-            return null;
-        }
-        return QCategory.category.parent.id.eq(parentId);
+        return parentId != null ? QCategory.category.parent.id.eq(parentId) : null;
     }
 }
