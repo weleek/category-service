@@ -1,20 +1,22 @@
 package com.shop.category.entity;
 
-import com.shop.category.dto.CategorySaveDto;
-import com.shop.category.dto.CategoryUpdateDto;
+import com.shop.category.dto.CategoryDto;
 import com.shop.common.converter.BooleanToYNConverter;
 import com.shop.common.model.BaseEntity;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import java.util.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Getter
@@ -25,7 +27,7 @@ import java.util.*;
 @org.hibernate.annotations.Table(appliesTo = "category", comment = "카테고리 정보")
 public class Category extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "category_id")
     @Comment("카테고리시스템아이디")
     private Long id;
@@ -33,6 +35,7 @@ public class Category extends BaseEntity {
     @Column(nullable = false, length = 20)
     @Comment("카테고리명")
     @Length(min = 2, max = 20)
+    @NotNull
     private String name;
 
     @Column(columnDefinition = "varchar(1) not null default 'N'", nullable = false)
@@ -64,6 +67,10 @@ public class Category extends BaseEntity {
 
     @Builder
     public Category(Long id, String name, List<Category> children) {
+        if (StringUtils.isEmpty(name)) {
+            throw new IllegalArgumentException();
+        }
+
         this.id = id;
         this.name = name;
         this.isDelete = false;
@@ -91,8 +98,8 @@ public class Category extends BaseEntity {
         this.children.add(children);
     }
 
-    private void setChildren(List<CategorySaveDto> childrenDto) {
-        for (CategorySaveDto childDto: childrenDto) {
+    private void setChildren(List<CategoryDto> childrenDto) {
+        for (CategoryDto childDto: childrenDto) {
             Category category = Category.builder()
                     .name(childDto.getName())
                     .build();
@@ -105,9 +112,9 @@ public class Category extends BaseEntity {
         }
     }
 
-    private void updateChindren(List<CategoryUpdateDto> childrenDto) {
+    private void updateChindren(List<CategoryDto> childrenDto) {
         for (Category child: this.getChildren()) {
-            for (CategoryUpdateDto childDto: childrenDto) {
+            for (CategoryDto childDto: childrenDto) {
                 if (child.getId().equals(childDto.getId())) {
                     child.changeName(childDto.getName());
                     if (childDto.getChildren() != null) {
@@ -118,7 +125,7 @@ public class Category extends BaseEntity {
         }
     }
 
-    public static Category createCategory(CategorySaveDto dto) {
+    public static Category createCategory(CategoryDto dto) {
         Category category = Category.builder()
                 .name(dto.getName())
                 .build();
@@ -138,7 +145,10 @@ public class Category extends BaseEntity {
         }
     }
 
-    public void update(CategoryUpdateDto dto) {
+    public void update(CategoryDto dto) {
+        if (StringUtils.isEmpty(dto.getName())) {
+            throw new IllegalArgumentException();
+        }
         this.name = dto.getName();
         updateChindren(dto.getChildren());
     }

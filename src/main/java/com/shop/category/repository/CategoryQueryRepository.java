@@ -1,6 +1,5 @@
 package com.shop.category.repository;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop.category.dto.CategorySearchDto;

@@ -8,9 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.ldap.HasControls;
-import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -21,13 +18,13 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<?> getCategorys(CategorySearchDto dto) {
+    public ResponseEntity<?> getCategories(CategorySearchDto dto) {
         List<Category> categories = categoryService.getCategories(dto);
         return ApiResult.success(CategoriesResponseDto.from(categories));
     }
 
     @PostMapping
-    public ResponseEntity<?> postCategory(@RequestBody @Valid CategorySaveDto dto) {
+    public ResponseEntity<?> postCategory(@RequestBody CategoryDto dto) {
         Long categoryId = categoryService.save(dto);
         return ApiResult.success(new CategoryResponseDto(categoryId));
     }
@@ -39,7 +36,7 @@ public class CategoryController {
     }
 
     @PatchMapping
-    public ResponseEntity<?> putCategory(@RequestBody @Valid CategoryUpdateDto dto) {
+    public ResponseEntity<?> patchCategory(@RequestBody CategoryDto dto) {
         categoryService.update(dto);
         return ApiResult.success();
     }
