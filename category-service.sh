@@ -1,22 +1,21 @@
 #!/bin/bash
 
 MODE=$1
-
-echo ------------------- CATEGORY SERVICE COMMAND -------------------
-
+SERVICE_HOME="$( cd "$( dirname "$0" )" && pwd -P )"
 PID=`ps -ef | grep java | grep category-service | awk '{print $2}'`
 
 if [[ "${MODE}" = "build" ]]; then
-  sh category-service/gradlew bootJar -p ./category-service/
+  sh $SERVICE_HOME/gradlew bootJar -p $SERVICE_HOME
   echo 'category-service build complete!'
 
 elif [[ "${MODE}" = "start" ]]; then
 
-  if [[ -z "$PID" ]]; then
+  # shellcheck disable=SC2236
+  if [[ ! -z "$PID" ]]; then
     echo "[ERROR] category-service process is already start ..."
   else
-    sh java -jar ./category-service/build/libs/category-service-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
-    ehco 'category-service start!'
+    java -jar $SERVICE_HOME/build/libs/category-service-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
+    echo 'category-service start!'
   fi
 
 elif [[ "${MODE}" = "stop" ]]; then
@@ -25,18 +24,21 @@ elif [[ "${MODE}" = "stop" ]]; then
     echo "[ERROR] category-service process is not working ..."
   else
     kill -9 $PID
-    ehco 'category-service stop!'
+    echo 'category-service stop!'
   fi
 
 elif [[ "${MODE}" = "restart" ]]; then
+
+  # shellcheck disable=SC2236
   if [[ ! -z "$PID" ]]; then
     kill -9 $PID
-    ehco 'category-service stop!'
+    echo 'category-service stop!'
   fi
 
-  sh java -jar ./category-service/build/libs/category-service-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
-  ehco 'category-service restart complete!'
+  java -jar $SERVICE_HOME/build/libs/category-service-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
+  echo 'category-service restart complete!'
 
 else
   echo "Incorrect Parameter!!"
+  echo "[Usage] sh category-service.sh [build|start|stop|restart]"
 fi
