@@ -21,14 +21,23 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         default_batch_fetch_size: 1000
     defer-datasource-initialization: true
     database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
 
 server:
   port: 8080
 
 logging:
+  file:
+    name: './log/app.log'
   level:
+    root: info
     org.hibernate.SQL: debug
+  logback:
+    rollingpolicy:
+      file-name-pattern: "./log/%d{yyyy-MM-dd}_%i.log"
+      max-history: 30
+      max-file-size: 10MB
