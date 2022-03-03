@@ -1,6 +1,7 @@
 package com.shop.category.service;
 
 import com.shop.category.dto.CategoryDto;
+import com.shop.category.dto.CategoryResponseDto;
 import com.shop.category.dto.CategorySearchDto;
 import com.shop.category.entity.Category;
 import com.shop.category.repository.CategoryQueryRepository;
@@ -20,7 +21,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryQueryRepository categoryQueryRepository;
 
-    public List<Category> getCategories(CategorySearchDto dto) {
+    public List<CategoryResponseDto> getCategories(CategorySearchDto dto) {
         return categoryQueryRepository.findBySearchDto(dto);
     }
 

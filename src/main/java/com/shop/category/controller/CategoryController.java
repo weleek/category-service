@@ -1,11 +1,12 @@
 package com.shop.category.controller;
 
 import com.shop.category.dto.*;
-import com.shop.category.entity.Category;
 import com.shop.category.service.CategoryService;
-import com.shop.common.response.ApiResult;
+import com.shop.common.response.ApiResponse;
+import com.shop.exception.ApiException;
+import com.shop.exception.ExceptionDefinition;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,26 +19,30 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<?> getCategories(CategorySearchDto dto) {
-        List<Category> categories = categoryService.getCategories(dto);
-        return ApiResult.success(CategoriesResponseDto.from(categories));
+    public ApiResponse<?> getCategories(CategorySearchDto dto) {
+        List<CategoryResponseDto> categories = categoryService.getCategories(dto);
+        return ApiResponse.success(CategoriesResponseDto.builder()
+                .categories(categories)
+                .build());
     }
 
     @PostMapping
-    public ResponseEntity<?> postCategory(@RequestBody CategoryDto dto) {
+    public ApiResponse<?> postCategory(@RequestBody CategoryDto dto) {
         Long categoryId = categoryService.save(dto);
-        return ApiResult.success(new CategoryResponseDto(categoryId));
+        return ApiResponse.success(CategoryResponseDto.builder()
+                .categoryId(categoryId)
+                .build());
     }
 
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<?> deleteCategory(@PathVariable("categoryId") Long categoryId) {
+    public ApiResponse<?> deleteCategory(@PathVariable("categoryId") Long categoryId) {
         categoryService.delete(categoryId);
-        return ApiResult.success();
+        return ApiResponse.success();
     }
 
     @PatchMapping
-    public ResponseEntity<?> patchCategory(@RequestBody CategoryDto dto) {
+    public ApiResponse<?> patchCategory(@RequestBody CategoryDto dto) {
         categoryService.update(dto);
-        return ApiResult.success();
+        return ApiResponse.success();
     }
 }

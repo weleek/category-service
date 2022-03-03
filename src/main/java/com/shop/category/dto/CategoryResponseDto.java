@@ -1,59 +1,27 @@
 package com.shop.category.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.shop.category.entity.Category;
+import com.shop.common.converter.BooleanToYNConverter;
 import lombok.*;
-import lombok.experimental.Accessors;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.persistence.Convert;
+import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @ToString
-@Accessors(chain = true)
+@Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
 public class CategoryResponseDto {
+
+    private Long parentId;
+    private String parentName;
 
     private Long categoryId;
     private String name;
 
-    private List<CategoryResponseDto> children;
+    @Convert(converter = BooleanToYNConverter.class)
+    private Boolean isDelete;
 
-    public CategoryResponseDto(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    private void addChild(CategoryResponseDto categoryResponseDto) {
-        if (children == null) {
-            children = new ArrayList<>();
-        }
-        this.children.add(categoryResponseDto);
-    }
-
-    public static CategoryResponseDto from(Category category) {
-        CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
-        categoryResponseDto.setCategoryId(category.getId())
-                .setName(category.getName());
-
-        categoryResponseDto.setChildren(category.getChildren());
-        return categoryResponseDto;
-    }
-
-    private void setChildren(List<Category> children) {
-        for (Category child: children) {
-            CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
-            categoryResponseDto.setCategoryId(child.getId())
-                    .setName(child.getName());
-
-            this.addChild(categoryResponseDto);
-            if (child.getChildren() != null) {
-                categoryResponseDto.setChildren(child.getChildren());
-            }
-        }
-    }
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

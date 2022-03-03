@@ -76,7 +76,7 @@ response body : 응답형식으로 등록한 상위 카테고리의 시스템 �
 ```
 2. 카테고리 수정
 ```http request
-PATCH http://{{host}}:{{port}}/category/{{categoryId}}
+PATCH http://{{host}}:{{port}}/category
 Content-Type: application/json; charset=utf-8
 {
 	"id" : 2,
@@ -119,50 +119,26 @@ response body
 {
   "success": true,
   "code": "0000",
-  "response": {
-    "categories": [
-      {
-        "categoryId": 1,
-        "name": "의류",
-        "children": [
-          {
-            "categoryId": 2,
-            "name": "상의",
-            "children": [
-              {
-                "categoryId": 6,
-                "name": "아우터",
-                "children": [
-                  {
-                    "categoryId": 7,
-                    "name": "얇은"
-                  },
-                  {
-                    "categoryId": 8,
-                    "name": "두꺼운"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "categoryId": 3,
-            "name": "하의",
-            "children": [
-              {
-                "categoryId": 4,
-                "name": "속옷"
-              },
-              {
-                "categoryId": 5,
-                "name": "양말"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+  "response": [
+    {
+      "parentId": 3,
+      "parentName": "하의",
+      "categoryId": 4,
+      "name": "속옷",
+      "isDelete": false,
+      "createdAt": "2022-03-07T12:31:59.431",
+      "updatedAt": "2022-03-07T12:31:59.431"
+    },
+    {
+      "parentId": 3,
+      "parentName": "하의",
+      "categoryId": 5,
+      "name": "양말",
+      "isDelete": false,
+      "createdAt": "2022-03-07T12:31:59.432",
+      "updatedAt": "2022-03-07T12:31:59.432"
+    }
+  ]
 }
 ```
 

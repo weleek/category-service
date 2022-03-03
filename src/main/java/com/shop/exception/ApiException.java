@@ -1,22 +1,22 @@
 package com.shop.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public class ApiException extends RuntimeException {
 
     private final ExceptionDefinition error;
     private final String customMessage;
 
-    public ApiException (ExceptionDefinition e) {
-        super(e.getMessage());
-        this.error = e;
-        this.customMessage = e.getMessage();
+    public ApiException(ExceptionDefinition error) {
+        this.error = error;
+        this.customMessage = null;
     }
 
-    public ApiException (ExceptionDefinition e, String message) {
-        super(message);
-        this.error = e;
-        this.customMessage = message;
+    public ApiException(ExceptionDefinition error, String customMessage) {
+        this.error = error;
+        this.customMessage = customMessage;
     }
 
     public HttpStatus getHttpStatus() {
@@ -28,6 +28,7 @@ public class ApiException extends RuntimeException {
     }
 
     public String getMessage() {
-        return this.customMessage;
+        return this.customMessage != null ?
+                this.customMessage : this.error.getMessage();
     }
 }
