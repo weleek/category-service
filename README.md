@@ -76,7 +76,7 @@ response body : 응답형식으로 등록한 상위 카테고리의 시스템 �
 ```
 2. 카테고리 수정
 ```http request
-PATCH http://{{host}}:{{port}}/category/{{categoryId}}
+PATCH http://{{host}}:{{port}}/category
 Content-Type: application/json; charset=utf-8
 {
 	"id" : 2,
