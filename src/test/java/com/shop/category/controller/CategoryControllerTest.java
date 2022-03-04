@@ -153,7 +153,7 @@ public class CategoryControllerTest {
                 .children(medium)
                 .build());
 
-        when(categoryService.getCategories(any(CategorySearchDto.class))).thenReturn(category);
+//        when(categoryService.getCategories(any(CategorySearchDto.class))).thenReturn(category);
 
         Long categoryId = 1L;
 

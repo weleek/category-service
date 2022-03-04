@@ -48,7 +48,8 @@ public class Category extends BaseEntity {
     @ToString.Exclude
     private Category parent;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "parent")
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "parent")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "parent")
     @ToString.Exclude
     private List<Category> children = new ArrayList<>();
 
@@ -91,11 +92,13 @@ public class Category extends BaseEntity {
         this.name = name;
     }
 
-    public void addChild(Category children) {
-        if (children.getParent() != this) {
-            children.setParent(this);
+    public void addChild(Category child) {
+        if (child.getParent() != this) {
+            child.setParent(this);
         }
-        this.children.add(children);
+        if (!this.children.contains(child)) {
+            this.children.add(child);
+        }
     }
 
     private void setChildren(List<CategoryDto> childrenDto) {

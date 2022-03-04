@@ -2,6 +2,7 @@ package com.shop.category.controller;
 
 import com.shop.category.dto.*;
 import com.shop.category.entity.Category;
+import com.shop.category.entity.CategoryCTE;
 import com.shop.category.service.CategoryService;
 import com.shop.common.response.ApiResult;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,9 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<?> getCategories(CategorySearchDto dto) {
-        List<Category> categories = categoryService.getCategories(dto);
-        return ApiResult.success(CategoriesResponseDto.from(categories));
+        List<CategoryCTE> categories = categoryService.getCategories(dto);
+        return ApiResult.success(categories);
+//        return ApiResult.success(CategoriesResponseDto.from(categories));
     }
 
     @PostMapping
