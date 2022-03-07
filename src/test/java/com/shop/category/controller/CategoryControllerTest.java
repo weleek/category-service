@@ -2,8 +2,8 @@ package com.shop.category.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shop.category.dto.CategoryDto;
+import com.shop.category.dto.CategoryResponseDto;
 import com.shop.category.dto.CategorySearchDto;
-import com.shop.category.entity.Category;
 import com.shop.category.service.CategoryService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -136,26 +138,40 @@ public class CategoryControllerTest {
     @Test
     void 카테고리_조회() throws Exception {
         // given
-        List<Category> small = Collections.singletonList(Category.builder()
-                .id(3L)
-                .name("소분류")
-                .build());
+        CategoryResponseDto dto1 = CategoryResponseDto.builder()
+                .categoryId(1L)
+                .name("부모")
+                .isDelete(false)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
 
-        List<Category> medium = Collections.singletonList(Category.builder()
-                .id(2L)
-                .name("중분류")
-                .children(small)
-                .build());
+        CategoryResponseDto dto2 = CategoryResponseDto.builder()
+                .parentId(1L)
+                .parentName("부모")
+                .categoryId(2L)
+                .name("자식1")
+                .isDelete(false)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
 
-        List<Category> category = Collections.singletonList(Category.builder()
-                .id(1L)
-                .name("대분류")
-                .children(medium)
-                .build());
+        CategoryResponseDto dto3 = CategoryResponseDto.builder()
+                .parentId(1L)
+                .parentName("부모")
+                .categoryId(3L)
+                .name("자식2")
+                .isDelete(false)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
 
-        when(categoryService.getCategories(any(CategorySearchDto.class))).thenReturn(category);
+        List<CategoryResponseDto> categoryResponses = Arrays.asList(dto1, dto2, dto3);
 
-        Long categoryId = 1L;
+        when(categoryService.getCategories(any(CategorySearchDto.class)))
+                .thenReturn(categoryResponses);
+
+        long categoryId = 1L;
 
         // when
         ResultActions resultActions = mockMvc.perform(get(URI + "?parentId=" + categoryId)
