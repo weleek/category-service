@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> exceptionHandler(ConstraintViolationException exception) {
         String message = exception.getConstraintViolations()
                 .stream()
-                .map(violation -> "['" + getPopertyName(violation.getPropertyPath().toString()) + "' is '" +
+                .map(violation -> "['" + getPropertyName(violation.getPropertyPath().toString()) + "' is '" +
                         violation.getInvalidValue() + "': " + violation.getMessage() + "]")
                 .collect(Collectors.joining(", "));
 
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.fail(ExceptionDefinition.MethodArgumentTypeMismatchException.getCode(), message));
     }
 
-    protected String getPopertyName(String propertyPath) {
+    protected String getPropertyName(String propertyPath) {
         return propertyPath.substring(propertyPath.lastIndexOf('.') + 1);
     }
 }
