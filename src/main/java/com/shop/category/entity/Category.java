@@ -48,7 +48,7 @@ public class Category extends BaseEntity {
     @ToString.Exclude
     private Category parent;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "parent")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "parent")
     @ToString.Exclude
     private List<Category> children = new ArrayList<>();
 
